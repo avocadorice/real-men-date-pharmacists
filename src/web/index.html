@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacist Job Hub & Application Accelerator</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation & Accelerator -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon">💊</span>
+                    <span class="logo-text">RxApply<strong>Bot</strong></span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-tab="jobs">📋 Scraped Jobs</button>
+                <button class="nav-btn" data-tab="accelerator">⚡ Copy-Paste Profile</button>
+                <button class="nav-btn" data-tab="keywords">🔑 ATS Keywords</button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="status-indicator">
+                    <span class="status-dot green"></span>
+                    <span class="status-label">Database Connected</span>
+                </div>
+                <div class="version">v1.1 (San Jose 95120)</div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-titles">
+                    <h1>Pharmacist Career Dashboard</h1>
+                    <p class="subtitle">Supporting Ellen's transition to a better schedule & lower commute</p>
+                </div>
+                <div class="header-actions">
+                    <button id="scrape-btn" class="btn btn-primary">
+                        <span class="btn-icon">🔄</span> Scan New Postings
+                    </button>
+                </div>
+            </header>
+
+            <!-- Jobs Tab -->
+            <div id="tab-jobs" class="tab-content active">
+                <!-- Stats Row -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon">🔍</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-total">0</span>
+                            <span class="stat-label">Total Jobs Found</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🚗</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-avg-commute">-</span>
+                            <span class="stat-label">Avg Commute (mi)</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-applied">0</span>
+                            <span class="stat-label">Active Applications</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🆕</div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-new">0</span>
+                            <span class="stat-label">New Opportunities</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters & Search -->
+                <div class="filters-container">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="search-input" placeholder="Search by title, company, or keyword...">
+                    </div>
+                    <div class="filter-controls">
+                        <div class="select-wrapper">
+                            <label for="filter-status">Status</label>
+                            <select id="filter-status">
+                                <option value="all">All Statuses</option>
+                                <option value="new" selected>New / Unseen</option>
+                                <option value="seen">Reviewed</option>
+                                <option value="applied">Applied</option>
+                                <option value="archived">Archived</option>
+                            </select>
+                        </div>
+                        <div class="select-wrapper">
+                            <label for="filter-distance">Commute Range</label>
+                            <select id="filter-distance">
+                                <option value="all">Any Distance</option>
+                                <option value="15">Under 15 miles (Ideal)</option>
+                                <option value="30">Under 30 miles</option>
+                                <option value="remote">Remote / WFH Only</option>
+                            </select>
+                        </div>
+                        <div class="select-wrapper">
+                            <label for="filter-employer">Employer</label>
+                            <select id="filter-employer">
+                                <option value="all">All Employers</option>
+                                <option value="costco">Costco Wholesale</option>
+                                <option value="kaiser">Kaiser Permanente</option>
+                                <option value="safeway">Safeway</option>
+                                <option value="other">Other Chains / PBMs</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jobs Feed -->
+                <div class="jobs-feed">
+                    <div class="feed-header">
+                        <h2>Opportunities Near San Jose (95120)</h2>
+                        <span class="feed-count" id="feed-count">Showing 0 jobs</span>
+                    </div>
+                    <div class="jobs-list" id="jobs-list">
+                        <!-- Loaded dynamically via JavaScript -->
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Loading pharmacist listings...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Accelerator Tab -->
+            <div id="tab-accelerator" class="tab-content">
+                <div class="tab-header">
+                    <h2>⚡ Application Copy-Paste Accelerator</h2>
+                    <p>Click any field below to copy it instantly to your clipboard. Bypasses repetitive form entry.</p>
+                </div>
+                
+                <div class="accelerator-grid">
+                    <!-- Section: Personal Info -->
+                    <div class="acc-section">
+                        <h3>👤 Personal Details</h3>
+                        <div class="acc-field-row">
+                            <div class="field-info">
+                                <span class="field-name">First Name</span>
+                                <span class="field-value" id="p-first">Xiaoming</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('Xiaoming', this)">Copy</button>
+                        </div>
+                        <div class="acc-field-row">
+                            <div class="field-info">
+                                <span class="field-name">Preferred Name</span>
+                                <span class="field-value" id="p-pref">Ellen</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('Ellen', this)">Copy</button>
+                        </div>
+                        <div class="acc-field-row">
+                            <div class="field-info">
+                                <span class="field-name">Last Name</span>
+                                <span class="field-value" id="p-last">Zhang</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('Zhang', this)">Copy</button>
+                        </div>
+                        <div class="acc-field-row">
+                            <div class="field-info">
+                                <span class="field-name">Email Address</span>
+                                <span class="field-value" id="p-email">ellen.zhang@example.com</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('ellen.zhang@example.com', this)">Copy</button>
+                        </div>
+                        <div class="acc-field-row">
+                            <div class="field-info">
+                                <span class="field-name">Phone Number</span>
+                                <span class="field-value" id="p-phone">(555) 019-2834</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('(555) 019-2834', this)">Copy</button>
+                        </div>
+                        <div class="acc-field-row">
+                            <div class="field-info">
+                                <span class="field-name">Home Address</span>
+                                <span class="field-value">San Jose, CA 95120</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('San Jose, CA 95120', this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <!-- Section: Licensing & Certs -->
+                    <div class="acc-section">
+                        <h3>🪪 Professional Licensing</h3>
+                        <div class="acc-field-row">
+                            <div class="field-info">
+                                <span class="field-name">CA RPh License Number</span>
+                                <span class="field-value">82498</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('82498', this)">Copy</button>
+                        </div>
+                        <div class="acc-field-row">
+                            <div class="field-info">
+                                <span class="field-name">CA License Registry String</span>
+                                <span class="field-value">RPH 82498</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('RPH 82498', this)">Copy</button>
+                        </div>
+                        <div class="acc-field-row">
+                            <div class="field-info">
+                                <span class="field-name">National Provider Identifier (NPI)</span>
+                                <span class="field-value" id="p-npi">[FILL IN NPI]</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText(document.getElementById('p-npi').textContent, this)">Copy</button>
+                        </div>
+                        <div class="acc-field-row">
+                            <div class="field-info">
+                                <span class="field-name">APhA Immunization Cert Date</span>
+                                <span class="field-value">September 15, 2015</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('09/15/2015', this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <!-- Section: Education -->
+                    <div class="acc-section long-section">
+                        <h3>🎓 Education History</h3>
+                        <div class="acc-field-row block-field">
+                            <div class="field-info">
+                                <span class="field-name">University of the Pacific (PharmD, 2015 - 2019)</span>
+                                <span class="field-description">Stockton, CA | Doctor of Pharmacy</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('University of the Pacific, Stockton, CA\nDoctor of Pharmacy (PharmD), 2015 - 2019', this)">Copy Block</button>
+                        </div>
+                        <div class="acc-field-row block-field">
+                            <div class="field-info">
+                                <span class="field-name">University of California, Davis (BS, 2008 - 2012)</span>
+                                <span class="field-description">Davis, CA | BS in Biological Sciences (Cell & Molecular) | Cum Laude</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('University of California, Davis, CA\nBachelor of Science in Biological Sciences (Molecular/Cellular Biology), 2008 - 2012\nHonors: Cum Laude', this)">Copy Block</button>
+                        </div>
+                    </div>
+
+                    <!-- Section: Work History Blocks -->
+                    <div class="acc-section long-section">
+                        <h3>💼 Work Experience copy blocks</h3>
+                        <div class="acc-field-row block-field">
+                            <div class="field-info">
+                                <span class="field-name">Walmart Pharmacy (Mountain View, CA) - March 2021 - Present</span>
+                                <span class="field-description">Deliver comprehensive pharmacy services, process/verify prescriptions, perform clinical Medication Therapy Management (MTM), coordinate immunizations, float across regional store networks (Salinas, Mountain View, Fremont, Los Banos).</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('Walmart Pharmacy - Mountain View, CA\nStaff Pharmacist / Floater Pharmacist (March 2021 - Present)\n- Deliver comprehensive pharmaceutical care in a high-volume retail setting.\n- Provide advanced patient counseling on complex medication regimens and chronic disease management.\n- Perform comprehensive Medication Therapy Management (MTM) reviews.\n- Administer immunizations and conduct point-of-care testing.\n- Resolve insurance rejections, prior authorizations, and formulary issues.\n- Collaborate with prescribers to provide evidence-based pharmacotherapy recommendations.', this)">Copy Bullet Points</button>
+                        </div>
+                        <div class="acc-field-row block-field">
+                            <div class="field-info">
+                                <span class="field-name">Haller's Pharmacy (Fremont, CA) - July 2020 - Oct 2021</span>
+                                <span class="field-description">Provided community retail pharmacy care, patient counseling, immunization schedules, and collaborated with medical providers to optimize treatments.</span>
+                            </div>
+                            <button class="btn-copy" onclick="copyText('Haller’s Pharmacy & Medical Supply - Fremont, CA\nStaff Pharmacist (July 2020 - October 2021)\n- Delivered individualized medication counseling and chronic disease education to diverse patient populations.\n- Evaluated immunization histories and administered vaccines in accordance with CDC and state guidelines.\n- Provided clinical recommendations to prescribers to enhance medication safety and efficacy.\n- Participated in COVID-19 testing and vaccination initiatives to support community public health.', this)">Copy Bullet Points</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Keywords Tab -->
+            <div id="tab-keywords" class="tab-content">
+                <div class="tab-header">
+                    <h2>🔑 ATS Keyword Matrix & Target Resumes</h2>
+                    <p>Refer to these target keyword sets to ensure Ellen's resume scores high for specific employer tracking systems.</p>
+                </div>
+                
+                <div class="keywords-grid">
+                    <div class="keyword-card red-theme">
+                        <h3>🏪 Costco / Retail Focus</h3>
+                        <p class="description">Costco values customer relations, high-volume accuracy, and operational efficiency.</p>
+                        <div class="tag-group">
+                            <span class="tag">Registered Pharmacist</span>
+                            <span class="tag">member service</span>
+                            <span class="tag">high-volume</span>
+                            <span class="tag">prescription verification</span>
+                            <span class="tag">immunization delivery</span>
+                            <span class="tag">automated dispensing</span>
+                            <span class="tag">patient counseling</span>
+                            <span class="tag">regulatory compliance</span>
+                            <span class="tag">inventory management</span>
+                            <span class="tag">pharmacy laws</span>
+                        </div>
+                        <div class="resume-link-box">
+                            <a href="resumes/costco_retail.md" target="_blank" class="btn btn-secondary btn-sm">📄 Open Costco Resume</a>
+                        </div>
+                    </div>
+
+                    <div class="keyword-card blue-theme">
+                        <h3>🏥 Kaiser / Clinical Outpatient</h3>
+                        <p class="description">Kaiser prioritizes disease state management, EHR proficiency, and collaborative protocols.</p>
+                        <div class="tag-group">
+                            <span class="tag">Ambulatory Care Pharmacist</span>
+                            <span class="tag">Clinical Pharmacist</span>
+                            <span class="tag">Medication Therapy Management</span>
+                            <span class="tag">MTM / CDTM</span>
+                            <span class="tag">disease state management</span>
+                            <span class="tag">Epic EHR</span>
+                            <span class="tag">anticoagulation</span>
+                            <span class="tag">diabetes management</span>
+                            <span class="tag">hypertension</span>
+                            <span class="tag">provider collaboration</span>
+                            <span class="tag">clinical interventions</span>
+                        </div>
+                        <div class="resume-link-box">
+                            <a href="resumes/kaiser_clinical.md" target="_blank" class="btn btn-secondary btn-sm">📄 Open Kaiser Resume</a>
+                        </div>
+                    </div>
+
+                    <div class="keyword-card purple-theme">
+                        <h3>💻 Managed Care / PBM / Remote</h3>
+                        <p class="description">Corporate roles value utilization reviews, formulary compliance, and audit controls.</p>
+                        <div class="tag-group">
+                            <span class="tag">Managed Care Pharmacist</span>
+                            <span class="tag">utilization management</span>
+                            <span class="tag">prior authorization (PA)</span>
+                            <span class="tag">formulary compliance</span>
+                            <span class="tag">Drug Utilization Review</span>
+                            <span class="tag">Star Ratings</span>
+                            <span class="tag">claims adjudication</span>
+                            <span class="tag">telephonic consultation</span>
+                            <span class="tag">CMS compliance</span>
+                            <span class="tag">step therapy</span>
+                            <span class="tag">cost-effectiveness</span>
+                        </div>
+                        <div class="resume-link-box">
+                            <a href="resumes/managed_care_pbm.md" target="_blank" class="btn btn-secondary btn-sm">📄 Open Managed Care Resume</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notes Modal -->
+    <div id="notes-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Application Notes</h3>
+                <button class="close-modal" onclick="closeNotesModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-job-title" class="modal-subtitle">Job Title at Company</p>
+                <input type="hidden" id="modal-job-id">
+                <textarea id="modal-notes-text" placeholder="Add custom notes (e.g. interviewer names, follow-up dates, application status details...)"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeNotesModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveJobNotes()">Save Notes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

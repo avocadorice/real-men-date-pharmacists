@@ -1,0 +1,16 @@
+{
+  "session-logging": {
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "python3 .agents/scripts/log-prompt.py"
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "python3 .agents/scripts/log-session-end.py"
+      }
+    ]
+  }
+}
